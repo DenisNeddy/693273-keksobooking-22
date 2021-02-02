@@ -14,7 +14,7 @@ const getRandomFloatNumber = function (min, max, count) {
     return 'Error';
   }
 
-  return (Math.random() * (max - min + 1) + min).toFixed(count);
+  return parseFloat((Math.random() * (max - min + 1) + min).toFixed(count));
 
 };
 
