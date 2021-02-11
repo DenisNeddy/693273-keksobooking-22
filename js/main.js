@@ -1,4 +1,6 @@
 
+'use strict';
+
 const TITLE = [
   'Заголовок номер 1',
   'Заголовок номер 2',
@@ -81,9 +83,6 @@ const generateRandomArrayItem = function (array, min, max) {
   return array[getRandomNumber(min, max)];
 }
 
-
-
-
 const generatePrice = function () {
   return getRandomNumber(1,10000);
 }
@@ -95,7 +94,6 @@ const generateRooms = function () {
 const generateGuests = function () {
   return getRandomNumber(1,4);
 }
-
 
 const getGenerateFeatures = function () {
   const features = [];
