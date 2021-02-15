@@ -11,6 +11,8 @@ const TITLE = [
   'Заголовок номер 8',
 ]
 
+const LENGTH = 10;
+
 const TYPE = [
   'palace',
   'flat',
@@ -106,7 +108,7 @@ const generateOffer = function () {
 const generateObjects = function () {
   const objects = [];
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < LENGTH; i++) {
     const locationPoint = getLocation();
     objects.push({
       author: generateAuthor(),
@@ -118,4 +120,6 @@ const generateObjects = function () {
   return objects;
 }
 
-generateObjects();
+
+
+export default {generateObjects};
