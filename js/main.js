@@ -3,3 +3,4 @@ import './data.js';
 import './elements.js';
 getRandomNumber();
 getRandomFloatNumber();
+
