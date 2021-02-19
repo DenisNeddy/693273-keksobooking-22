@@ -56,6 +56,7 @@ const renderCard  = (ad) => {
 
   return newPopup;
 }
+//отрисовка карточек
 
 const openCard = (ad) => {
   renderCard(ad);
