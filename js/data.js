@@ -11,6 +11,8 @@ const TITLE = [
   'Заголовок номер 8',
 ]
 
+const LENGTH = 10;
+
 const TYPE = [
   'palace',
   'flat',
@@ -74,6 +76,15 @@ const generateGuests = function () {
   return getRandomNumber(1,4);
 }
 
+const generatePhotos =  function () {
+  const length = getRandomNumber(2,7);
+  const photos = [];
+  for (let i = 0; i < length; i++) {
+    photos.push(generateRandomArrayItem(PHOTOS, 0, 2));
+  }
+  return photos;
+}
+
 const getGenerateFeatures = function () {
   const features = [];
   const values = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -88,6 +99,8 @@ const getGenerateFeatures = function () {
   return features;
 }
 
+
+
 const generateOffer = function () {
   return {
     title: generateRandomArrayItem(TITLE, 0, 7),
@@ -99,14 +112,15 @@ const generateOffer = function () {
     checkout: generateRandomArrayItem(CHECK_TIME, 0, 2),
     features: getGenerateFeatures(),
     description: generateRandomArrayItem(DESCRIPTION, 0, 7),
-    photos: generateRandomArrayItem(PHOTOS, 0, 2),
+    photos: generatePhotos(),
   }
 };
+
 
 const generateObjects = function () {
   const objects = [];
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < LENGTH; i++) {
     const locationPoint = getLocation();
     objects.push({
       author: generateAuthor(),
@@ -118,4 +132,4 @@ const generateObjects = function () {
   return objects;
 }
 
-generateObjects();
+export default generateObjects;
