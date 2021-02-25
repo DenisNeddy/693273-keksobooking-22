@@ -1,9 +1,9 @@
-import generateObjects from './data.js';
+//import generateObjects from './data.js';
 
 
 const popupTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-const objects = generateObjects();
+//const objects = generateObjects();
 
 
 const types = {
@@ -62,9 +62,9 @@ const openCard = (ad) => {
   renderCard(ad);
 }
 
-const canvas = document.querySelector('#map-canvas');
+//const canvas = document.querySelector('#map-canvas');
 
-canvas.appendChild(renderCard(objects[0]));
+//canvas.appendChild(renderCard(objects[0]));
 
 export default openCard;
 
