@@ -1,3 +1,5 @@
+import generateObjects from './data.js';
+import renderCard from './elements.js';
 let map;
 
 const disablePage = () => {
@@ -18,6 +20,9 @@ const disablePage = () => {
 };
 
 const addressField = document.querySelector('#address');
+addressField.disabled = true;
+
+const objects = generateObjects();
 
 const enablePage = () => {
   const adForm = document.querySelector('.ad-form');
@@ -36,8 +41,6 @@ const enablePage = () => {
   }
 }
 disablePage();
-
-
 
 const initMap = () => {
   // eslint-disable-next-line no-undef
@@ -69,12 +72,36 @@ const initMap = () => {
       draggable: true,
     },
   );
-
+  addressField.value = '35.68950, 139.69171';
   marker.addTo(map);
+  objects.forEach((item) => {
+    // eslint-disable-next-line no-undef
+    const markerIcon = L.icon({
+      iconUrl: 'img/pin.svg',
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+    });
+    // eslint-disable-next-line no-undef
+    const marker = L.marker(
+      {
+        lat: item.locationPoint.x,
+        lng: item.locationPoint.y,
+      }, {
+        icon: markerIcon,
+
+      },
+    );
+
+    marker.addTo(map).bindPopup(
+      renderCard(item),
+      {
+        keepInView: true,
+      },
+    );
+  });
   marker.on('moveend', (evt) => {
     const latLng = evt.target.getLatLng();
     addressField.value = `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}`;
-
   });
 };
 initMap();

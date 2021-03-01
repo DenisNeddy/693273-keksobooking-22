@@ -58,15 +58,12 @@ const renderCard  = (ad) => {
 }
 //отрисовка карточек
 
-const openCard = (ad) => {
-  renderCard(ad);
-}
 
 //const canvas = document.querySelector('#map-canvas');
 
 //canvas.appendChild(renderCard(objects[0]));
 
-export default openCard;
+export default renderCard;
 
 
 
