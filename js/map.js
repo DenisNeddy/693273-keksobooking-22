@@ -6,17 +6,22 @@ const disablePage = () => {
   const adForm = document.querySelector('.ad-form');
   adForm.classList.add('ad-form--disabled');
 
+
   const adFieldsets = adForm.querySelectorAll('fieldset');
   for (let i = 0; i < adFieldsets.length; i++) {
     adFieldsets[i].disabled = true;
   }
+
   const formFilterMap = document.querySelector('.map__filters');
   formFilterMap.classList.add('ad-form--disabled');
 
-  const formFilters = formFilterMap.querySelectorAll('.map-filter');
+  const formFilters = formFilterMap.querySelectorAll('.map__filter');
   for (let i = 0; i < formFilters.length; i++) {
     formFilters[i].disabled = true;
   }
+  const mapFeatures = formFilterMap.querySelector('.map__features');
+  mapFeatures.disabled = true;
+
 };
 
 const addressField = document.querySelector('#address');
@@ -39,6 +44,9 @@ const enablePage = () => {
   for (let i = 0; i < formFilters.length; i++) {
     formFilters[i].disabled = false;
   }
+
+  const mapFeatures = formFilterMap.querySelector('.map__features');
+  mapFeatures.disabled = false;
 }
 disablePage();
 
