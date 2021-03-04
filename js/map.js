@@ -40,7 +40,7 @@ const enablePage = () => {
   const formFilterMap = document.querySelector('.map__filters');
   formFilterMap.classList.remove('ad-form--disabled');
 
-  const formFilters = formFilterMap.querySelectorAll('.map-filter');
+  const formFilters = formFilterMap.querySelectorAll('.map__filter');
   for (let i = 0; i < formFilters.length; i++) {
     formFilters[i].disabled = false;
   }
