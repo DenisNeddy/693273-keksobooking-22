@@ -18,8 +18,6 @@ titleInput.addEventListener('input', () => {
   titleInput.reportValidity();
 });
 
-
-
 const typeMapping = {
   bungalow: 0,
   flat: 1000,
@@ -70,3 +68,4 @@ syncCapacity();
 inputNumberRooms.addEventListener('change', syncCapacity);
 
 
+// доработать код
