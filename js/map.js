@@ -25,7 +25,7 @@ const disablePage = () => {
 };
 
 const addressField = document.querySelector('#address');
-addressField.disabled = true;
+addressField.style.pointerEvents = 'none';
 
 const objects = generateObjects();
 

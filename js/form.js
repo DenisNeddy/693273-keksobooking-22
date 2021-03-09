@@ -28,7 +28,9 @@ const typeMapping = {
 const inputPrice = document.querySelector('#price');
 
 const typeShelter = document.querySelector('#type');
-
+typeShelter.value = 'bungalow';
+inputPrice.min = typeMapping[typeShelter.value];
+inputPrice.placeholder = typeMapping[typeShelter.value];
 typeShelter.addEventListener('change', () => {
   inputPrice.min = typeMapping[typeShelter.value];
   inputPrice.placeholder = typeMapping[typeShelter.value];
@@ -49,7 +51,7 @@ inputTimeout.addEventListener('change', () => {
 
 const inputNumberRooms = document.querySelector('#room_number');
 const inputCapacity = document.querySelector('#capacity');
-
+inputNumberRooms.value = '100';
 const capacities = inputCapacity.children;
 const syncCapacity = () => {
   if(inputNumberRooms.value === '100') {
@@ -68,4 +70,4 @@ syncCapacity();
 inputNumberRooms.addEventListener('change', syncCapacity);
 
 
-// доработать код
+
