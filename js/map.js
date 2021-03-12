@@ -1,4 +1,4 @@
-import generateObjects from './data.js';
+import api from './api.js';
 import renderCard from './elements.js';
 let map;
 
@@ -26,8 +26,6 @@ const disablePage = () => {
 
 const addressField = document.querySelector('#address');
 addressField.style.pointerEvents = 'none';
-
-const objects = generateObjects();
 
 const enablePage = () => {
   const adForm = document.querySelector('.ad-form');
@@ -82,31 +80,36 @@ const initMap = () => {
   );
   addressField.value = '35.68950, 139.69171';
   marker.addTo(map);
-  objects.forEach((item) => {
-    // eslint-disable-next-line no-undef
-    const markerIcon = L.icon({
-      iconUrl: 'img/pin.svg',
-      iconSize: [32, 32],
-      iconAnchor: [16, 32],
+  api.getData().then((data) => {
+    data.forEach((item) => {
+      // eslint-disable-next-line no-undef
+      const markerIcon = L.icon({
+        iconUrl: 'img/pin.svg',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+      });
+      // eslint-disable-next-line no-undef
+      const marker = L.marker(
+        {
+          lat: item.location.lat,
+          lng: item.location.lng,
+        }, {
+          icon: markerIcon,
+        },
+      );
+      marker.addTo(map).bindPopup(
+        renderCard(item),
+        {
+          keepInView: true,
+        },
+      );
     });
-    // eslint-disable-next-line no-undef
-    const marker = L.marker(
-      {
-        lat: item.locationPoint.x,
-        lng: item.locationPoint.y,
-      }, {
-        icon: markerIcon,
-
-      },
-    );
-
-    marker.addTo(map).bindPopup(
-      renderCard(item),
-      {
-        keepInView: true,
-      },
-    );
+  }).catch(() => {
+    const errorDataTemplate = document.querySelector('#error__data').content;
+    const errorDataBadge = errorDataTemplate.cloneNode(true);
+    document.body.appendChild(errorDataBadge);
   });
+
   marker.on('moveend', (evt) => {
     const latLng = evt.target.getLatLng();
     addressField.value = `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}`;
