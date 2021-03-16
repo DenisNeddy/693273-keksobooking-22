@@ -109,9 +109,18 @@ form.addEventListener('submit', (evt) => {
   api.postData(postData).then(() => {
     clearForm();
 
+
+
     const successTemplate = document.querySelector('#success').content.querySelector('.success');
     const successMessage = successTemplate.cloneNode(true);
     document.body.appendChild(successMessage);
+
+    document.body.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape') {
+        successMessage.remove();
+        clearForm();
+      }
+    })
   }).catch(() => {
     const errorTemplate = document.querySelector('#error').content.querySelector('.error');
     const errorMessage = errorTemplate.cloneNode(true);
