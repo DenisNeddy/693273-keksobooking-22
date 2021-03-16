@@ -1,6 +1,9 @@
+import api from './api.js';
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
+const form = document.querySelector('.ad-form');
 const titleInput = document.querySelector('#title');
+
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
 
@@ -51,17 +54,25 @@ inputTimeout.addEventListener('change', () => {
 
 const inputNumberRooms = document.querySelector('#room_number');
 const inputCapacity = document.querySelector('#capacity');
-inputNumberRooms.value = '100';
+inputNumberRooms.value = '1';
 const capacities = inputCapacity.children;
 const syncCapacity = () => {
+  let selected = false;
+
   if(inputNumberRooms.value === '100') {
     for(let i = 0; i < capacities.length; i++) {
       capacities[i].disabled = capacities[i].value !== '0';
     }
+    inputCapacity.value = 0;
   }  else {
     for (let i = 0; i < capacities.length; i++) {
       capacities[i].disabled = capacities[i].value > inputNumberRooms.value || capacities[i].value == '0';
+      if (inputCapacity.value !== capacities[i].value && !capacities[i].disabled && !selected) {
+        selected = true;
+        inputCapacity.value = capacities[i].value;
+      }
     }
+
   }
 }
 
@@ -69,5 +80,53 @@ syncCapacity();
 
 inputNumberRooms.addEventListener('change', syncCapacity);
 
+const clearForm = () => {
+  titleInput.value = '';
+  inputNumberRooms.value = '1';
+  inputCapacity.value = '1';
+  typeShelter.value = 'flat';
+  inputPrice.value = '';
+  inputPrice.min = typeMapping[typeShelter.value];
+  inputPrice.placeholder = typeMapping[typeShelter.value];
+  document.querySelector('#description').value = '';
+  const features = document.querySelectorAll('input[name=features]');
+  for (let i = 0; i < features.length; i++) {
+    features[i].checked = false;
+  }
+  inputTimein.value ='12:00';
+  inputTimeout.value ='12:00';
+}
 
+const resetButton = document.querySelector('.ad-form__reset');
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  clearForm();
+});
+
+form.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const postData = new FormData(form);
+  api.postData(postData).then(() => {
+    clearForm();
+
+    const successTemplate = document.querySelector('#success').content.querySelector('.success');
+    const successMessage = successTemplate.cloneNode(true);
+    document.body.appendChild(successMessage);
+  }).catch(() => {
+    const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+    const errorMessage = errorTemplate.cloneNode(true);
+    document.body.appendChild(errorMessage);
+    const resetButton = errorMessage.querySelector('.error__button');
+    resetButton.addEventListener('click', () => {
+      errorMessage.remove();
+      clearForm();
+    })
+    document.body.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape') {
+        errorMessage.remove();
+        clearForm();
+      }
+    })
+  })
+});
 
