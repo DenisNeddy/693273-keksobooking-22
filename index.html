@@ -71,7 +71,7 @@
     <!-- Форма объявления -->
     <section class="notice">
       <h2 class="notice__title">Ваше объявление</h2>
-      <form class="ad-form" action=" https://22.javascript.pages.academy/keksobooking" method="post" enctype="multipart/form-data" autocomplete="off">
+      <form class="ad-form" action="https://22.javascript.pages.academy/keksobooking" method="post" enctype="multipart/form-data" autocomplete="off">
         <fieldset class="ad-form-header">
           <legend class="ad-form-header__title">Ваша фотография (для карты)</legend>
           <div class="ad-form-header__upload">
@@ -131,9 +131,9 @@
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="capacity">Количество мест</label>
           <select id="capacity" name="capacity">
-            <option value="3" selected>для 3 гостей</option>
+            <option value="3">для 3 гостей</option>
             <option value="2">для 2 гостей</option>
-            <option value="1">для 1 гостя</option>
+            <option value="1" selected>для 1 гостя</option>
             <option value="0">не для гостей</option>
           </select>
         </fieldset>
@@ -168,7 +168,7 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--submit">
           <button class="ad-form__submit" type="submit">Опубликовать</button>
-          или <button class="ad-form__reset" type="reset">очистить</button>
+          или <button class="ad-form__reset" type="reset">Очистить</button>
         </fieldset>
       </form>
     </section>
@@ -226,6 +226,16 @@
     <div class="error">
       <p class="error__message">Ошибка размещения объявления</p>
       <button type="button" class="error__button">Попробовать снова</button>
+    </div>
+  </template>
+  <template id="error__data">
+    <div class="error__data-wrapper">
+      <p class="error__data-message">Что-то пошло не так!</p>
+    </div>
+  </template>
+  <template id="error__data">
+    <div class="error__data-wrapper">
+      <p class="error__data-message">Что-то пошло не так!</p>
     </div>
   </template>
   <script src="js/main.js" type="module"></script>
