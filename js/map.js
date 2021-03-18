@@ -2,6 +2,11 @@ import api from './api.js';
 import renderCard from './elements.js';
 let map;
 
+const housingType = document.querySelector('#housing-type');
+// const housingPrice = document.querySelector('#housing-price');
+// const housingRooms = document.querySelector('#housing-rooms');
+// const housingGuests = document.querySelector('#housing-guests');
+
 const disablePage = () => {
   const adForm = document.querySelector('.ad-form');
   adForm.classList.add('ad-form--disabled');
@@ -47,7 +52,7 @@ const enablePage = () => {
   mapFeatures.disabled = false;
 }
 disablePage();
-
+const markers = [];
 const initMap = () => {
   // eslint-disable-next-line no-undef
   map = L.map('map-canvas')
@@ -80,8 +85,15 @@ const initMap = () => {
   );
   addressField.value = '35.68950, 139.69171';
   marker.addTo(map);
-  api.getData().then((data) => {
-    data.forEach((item) => {
+
+  const filterData = (item) => {
+    let matched = true;
+    matched = housingType.value === 'any' || item.offer.type === housingType.value;
+    return matched;
+  };
+  let renderData = (data) => {
+    markers.forEach((marker) => map.removeLayer(marker));
+    data.filter(filterData).slice(0, 10).forEach((item) => {
       // eslint-disable-next-line no-undef
       const markerIcon = L.icon({
         iconUrl: 'img/pin.svg',
@@ -103,7 +115,13 @@ const initMap = () => {
           keepInView: true,
         },
       );
+      markers.push(marker);
     });
+  };
+
+  api.getData().then((data) => {
+    renderData(data);
+    housingType.addEventListener('change', () => renderData(data));
   }).catch(() => {
     const errorDataTemplate = document.querySelector('#error__data').content;
     const errorDataBadge = errorDataTemplate.cloneNode(true);
