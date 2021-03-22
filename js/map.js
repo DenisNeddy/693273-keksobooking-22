@@ -1,11 +1,13 @@
+/* global _:readonly */
 import api from './api.js';
 import renderCard from './elements.js';
 let map;
 
 const housingType = document.querySelector('#housing-type');
-// const housingPrice = document.querySelector('#housing-price');
-// const housingRooms = document.querySelector('#housing-rooms');
-// const housingGuests = document.querySelector('#housing-guests');
+const housingPrice = document.querySelector('#housing-price');
+const housingRooms = document.querySelector('#housing-rooms');
+const housingGuests = document.querySelector('#housing-guests');
+const formFilterMap = document.querySelector('.map__filters');
 
 const disablePage = () => {
   const adForm = document.querySelector('.ad-form');
@@ -17,7 +19,7 @@ const disablePage = () => {
     adFieldsets[i].disabled = true;
   }
 
-  const formFilterMap = document.querySelector('.map__filters');
+
   formFilterMap.classList.add('ad-form--disabled');
 
   const formFilters = formFilterMap.querySelectorAll('.map__filter');
@@ -40,7 +42,7 @@ const enablePage = () => {
   for (let i = 0; i < adFieldsets.length; i++) {
     adFieldsets[i].disabled = false;
   }
-  const formFilterMap = document.querySelector('.map__filters');
+
   formFilterMap.classList.remove('ad-form--disabled');
 
   const formFilters = formFilterMap.querySelectorAll('.map__filter');
@@ -88,7 +90,19 @@ const initMap = () => {
 
   const filterData = (item) => {
     let matched = true;
-    matched = housingType.value === 'any' || item.offer.type === housingType.value;
+    const priceMap = {
+      middle: [10000, 50000],
+      low: [0, 10000],
+      high: [50000, Infinity],
+    }
+    const features = document.querySelectorAll('input[name=features]');
+    matched = matched && (housingType.value === 'any' || item.offer.type === housingType.value);
+    matched = matched && (housingPrice.value === 'any' || (item.offer.price >= priceMap[housingPrice.value][0] && item.offer.price <= priceMap[housingPrice.value][1]));
+    matched = matched && (housingRooms.value === 'any' || item.offer.rooms === housingRooms.value);
+    matched = matched && (housingGuests.value === 'any' || item.offer.guests === housingGuests.value);
+    for (let i = 0; i < features.length; i++) {
+      matched = matched &&  (!features[i].checked || item.offer.features.includes(features[i].value));
+    }
     return matched;
   };
   let renderData = (data) => {
@@ -121,7 +135,7 @@ const initMap = () => {
 
   api.getData().then((data) => {
     renderData(data);
-    housingType.addEventListener('change', () => renderData(data));
+    formFilterMap.addEventListener('change', _.debounce(() => renderData(data), 500));
   }).catch(() => {
     const errorDataTemplate = document.querySelector('#error__data').content;
     const errorDataBadge = errorDataTemplate.cloneNode(true);
