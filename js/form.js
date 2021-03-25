@@ -3,6 +3,35 @@ const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 const form = document.querySelector('.ad-form');
 const titleInput = document.querySelector('#title');
+const avatarInput = document.querySelector('#avatar');
+const avatarImage = document.querySelector('.ad-form-header__preview').firstElementChild;
+const viewInput = document.querySelector('#images');
+const viewImage = document.querySelector('.ad-form__photo');
+
+
+
+const changeAvatar = () => {
+  const reader = new FileReader();
+  reader.onloadend = (e) => {
+    avatarImage.src = e.target.result;
+  }
+  reader.readAsDataURL(avatarInput.files[0]);
+}
+
+avatarInput.addEventListener('change', changeAvatar);
+
+const addImage = () => {
+  const reader = new FileReader();
+  const newImage = document.createElement('img');
+  newImage.style.width = '100%';
+  reader.onloadend = (e) => {
+    newImage.src = e.target.result;
+    viewImage.appendChild(newImage);
+  }
+  reader.readAsDataURL(viewInput.files[0]);
+}
+
+viewInput.addEventListener('change', addImage)
 
 titleInput.addEventListener('input', () => {
   const valueLength = titleInput.value.length;
@@ -43,7 +72,6 @@ const inputTimein = document.querySelector('#timein');
 
 const inputTimeout = document.querySelector('#timeout');
 
-
 inputTimein.addEventListener('change', () => {
   inputTimeout.value = inputTimein.value;
 });
@@ -72,7 +100,6 @@ const syncCapacity = () => {
         inputCapacity.value = capacities[i].value;
       }
     }
-
   }
 }
 
@@ -95,6 +122,13 @@ const clearForm = () => {
   }
   inputTimein.value ='12:00';
   inputTimeout.value ='12:00';
+
+  avatarInput.value = '';
+  avatarImage.src = 'img/muffin-grey.svg';
+  viewInput.value = '';
+  if (viewImage.children.length) {
+    viewImage.firstElementChild.remove();
+  }
 }
 
 const resetButton = document.querySelector('.ad-form__reset');
@@ -107,9 +141,7 @@ form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const postData = new FormData(form);
   api.postData(postData).then(() => {
-    clearForm();
-
-
+    resetButton.click();
 
     const successTemplate = document.querySelector('#success').content.querySelector('.success');
     const successMessage = successTemplate.cloneNode(true);
@@ -118,7 +150,7 @@ form.addEventListener('submit', (evt) => {
     document.body.addEventListener('keydown', (evt) => {
       if (evt.key === 'Escape') {
         successMessage.remove();
-        clearForm();
+        resetButton.click();
       }
     })
   }).catch(() => {

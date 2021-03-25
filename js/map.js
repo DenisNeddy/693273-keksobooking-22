@@ -8,6 +8,7 @@ const housingPrice = document.querySelector('#housing-price');
 const housingRooms = document.querySelector('#housing-rooms');
 const housingGuests = document.querySelector('#housing-guests');
 const formFilterMap = document.querySelector('.map__filters');
+const mapFeatures = document.querySelectorAll('input[name=features]');
 
 const disablePage = () => {
   const adForm = document.querySelector('.ad-form');
@@ -18,7 +19,6 @@ const disablePage = () => {
   for (let i = 0; i < adFieldsets.length; i++) {
     adFieldsets[i].disabled = true;
   }
-
 
   formFilterMap.classList.add('ad-form--disabled');
 
@@ -105,7 +105,7 @@ const initMap = () => {
     }
     return matched;
   };
-  let renderData = (data) => {
+  const renderData = (data) => {
     markers.forEach((marker) => map.removeLayer(marker));
     data.filter(filterData).slice(0, 10).forEach((item) => {
       // eslint-disable-next-line no-undef
@@ -136,6 +136,27 @@ const initMap = () => {
   api.getData().then((data) => {
     renderData(data);
     formFilterMap.addEventListener('change', _.debounce(() => renderData(data), 500));
+
+    const clearForm = () => {
+      housingType.value = 'any';
+      housingPrice.value = 'any';
+      housingRooms.value = 'any';
+      housingGuests.value = 'any';
+
+      for (let i = 0; i < mapFeatures.length; i++) {
+        mapFeatures[i].checked = false;
+      }
+      _.debounce(() => renderData(data), 500)();
+      // eslint-disable-next-line no-undef
+      marker.setLatLng(L.latLng(35.68950, 139.69171));
+      addressField.value = '35.68950, 139.69171';
+    }
+
+    const resetButton = document.querySelector('.ad-form__reset');
+    resetButton.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      clearForm();
+    });
   }).catch(() => {
     const errorDataTemplate = document.querySelector('#error__data').content;
     const errorDataBadge = errorDataTemplate.cloneNode(true);
@@ -147,9 +168,12 @@ const initMap = () => {
     addressField.value = `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}`;
   });
 };
+
+
+
 initMap();
 
-//нужно доработать код
+
 
 
 
