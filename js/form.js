@@ -1,14 +1,18 @@
 import api from './api.js';
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
+const TYPE_MAPPING = {
+  bungalow: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000,
+}
 const form = document.querySelector('.ad-form');
 const titleInput = document.querySelector('#title');
 const avatarInput = document.querySelector('#avatar');
 const avatarImage = document.querySelector('.ad-form-header__preview').firstElementChild;
 const viewInput = document.querySelector('#images');
 const viewImage = document.querySelector('.ad-form__photo');
-
-
 
 const changeAvatar = () => {
   const reader = new FileReader();
@@ -50,22 +54,15 @@ titleInput.addEventListener('input', () => {
   titleInput.reportValidity();
 });
 
-const typeMapping = {
-  bungalow: 0,
-  flat: 1000,
-  house: 5000,
-  palace: 10000,
-}
-
 const inputPrice = document.querySelector('#price');
 
 const typeShelter = document.querySelector('#type');
 typeShelter.value = 'bungalow';
-inputPrice.min = typeMapping[typeShelter.value];
-inputPrice.placeholder = typeMapping[typeShelter.value];
+inputPrice.min = TYPE_MAPPING[typeShelter.value];
+inputPrice.placeholder = TYPE_MAPPING[typeShelter.value];
 typeShelter.addEventListener('change', () => {
-  inputPrice.min = typeMapping[typeShelter.value];
-  inputPrice.placeholder = typeMapping[typeShelter.value];
+  inputPrice.min = TYPE_MAPPING[typeShelter.value];
+  inputPrice.placeholder = TYPE_MAPPING[typeShelter.value];
 });
 
 const inputTimein = document.querySelector('#timein');
@@ -113,8 +110,8 @@ const clearForm = () => {
   inputCapacity.value = '1';
   typeShelter.value = 'flat';
   inputPrice.value = '';
-  inputPrice.min = typeMapping[typeShelter.value];
-  inputPrice.placeholder = typeMapping[typeShelter.value];
+  inputPrice.min = TYPE_MAPPING[typeShelter.value];
+  inputPrice.placeholder = TYPE_MAPPING[typeShelter.value];
   document.querySelector('#description').value = '';
   const features = document.querySelectorAll('input[name=features]');
   for (let i = 0; i < features.length; i++) {
@@ -153,19 +150,23 @@ form.addEventListener('submit', (evt) => {
         resetButton.click();
       }
     })
+    successMessage.addEventListener('click', ()=> {
+      successMessage.remove();
+      resetButton.click();
+    })
   }).catch(() => {
     const errorTemplate = document.querySelector('#error').content.querySelector('.error');
     const errorMessage = errorTemplate.cloneNode(true);
     document.body.appendChild(errorMessage);
-    const resetButton = errorMessage.querySelector('.error__button');
-    resetButton.addEventListener('click', () => {
+    const errorButton = errorMessage.querySelector('.error__button');
+    errorButton.addEventListener('click', () => {
       errorMessage.remove();
-      clearForm();
+      resetButton.click();
     })
     document.body.addEventListener('keydown', (evt) => {
       if (evt.key === 'Escape') {
         errorMessage.remove();
-        clearForm();
+        resetButton.click();
       }
     })
   })

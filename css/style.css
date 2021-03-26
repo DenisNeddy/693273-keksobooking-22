@@ -916,13 +916,13 @@ fieldset {
   border: 2px solid #ff5635;
 }
 
-
 /**
  * Сообщения об успешном и неуспешном создании объявления
  */
 
 .success,
-.error {
+.error,
+.error__data-wrapper {
   position: fixed;
   top: 0;
   left: 0;
@@ -943,11 +943,20 @@ fieldset {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
+
 .success__message,
 .error__message {
   position: relative;
 
   color: #ffffff;
+  font-size: 50px;
+  font-weight: 700;
+}
+
+.error__data-message {
+  position: relative;
+
+  color: plum;
   font-size: 50px;
   font-weight: 700;
 }

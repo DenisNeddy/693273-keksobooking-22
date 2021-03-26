@@ -1,7 +1,6 @@
 /* global _:readonly */
 import api from './api.js';
 import renderCard from './elements.js';
-let map;
 
 const housingType = document.querySelector('#housing-type');
 const housingPrice = document.querySelector('#housing-price');
@@ -9,6 +8,8 @@ const housingRooms = document.querySelector('#housing-rooms');
 const housingGuests = document.querySelector('#housing-guests');
 const formFilterMap = document.querySelector('.map__filters');
 const mapFeatures = document.querySelectorAll('input[name=features]');
+const resetButton = document.querySelector('.ad-form__reset');
+let map;
 
 const disablePage = () => {
   const adForm = document.querySelector('.ad-form');
@@ -28,7 +29,6 @@ const disablePage = () => {
   }
   const mapFeatures = formFilterMap.querySelector('.map__features');
   mapFeatures.disabled = true;
-
 };
 
 const addressField = document.querySelector('#address');
@@ -152,7 +152,7 @@ const initMap = () => {
       addressField.value = '35.68950, 139.69171';
     }
 
-    const resetButton = document.querySelector('.ad-form__reset');
+
     resetButton.addEventListener('click', (evt) => {
       evt.preventDefault();
       clearForm();
@@ -160,7 +160,7 @@ const initMap = () => {
   }).catch(() => {
     const errorDataTemplate = document.querySelector('#error__data').content;
     const errorDataBadge = errorDataTemplate.cloneNode(true);
-    document.body.appendChild(errorDataBadge);
+    document.querySelector('main').appendChild(errorDataBadge);
   });
 
   marker.on('moveend', (evt) => {
@@ -168,8 +168,6 @@ const initMap = () => {
     addressField.value = `${latLng.lat.toFixed(5)}, ${latLng.lng.toFixed(5)}`;
   });
 };
-
-
 
 initMap();
 

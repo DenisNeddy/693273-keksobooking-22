@@ -1,17 +1,11 @@
-//import generateObjects from './data.js';
-
-
-const popupTemplate = document.querySelector('#card').content.querySelector('.popup');
-
-//const objects = generateObjects();
-
-
-const types = {
+const TYPES = {
   palace: 'Дворец',
   flat: 'Квартира',
   house: 'Дом',
   bungalow: 'Бунгало',
 };
+const popupTemplate = document.querySelector('#card').content.querySelector('.popup');
+
 const renderCard  = (ad) => {
   const newPopup = popupTemplate.cloneNode(true);
   const title = newPopup.querySelector('.popup__title');
@@ -26,7 +20,7 @@ const renderCard  = (ad) => {
 
   ad.offer.price ? (price.textContent = `${ad.offer.price}/ночь`): (price.remove());
 
-  ad.offer.type ? (type.textContent = types[ad.offer.type]) : (type.remove());
+  ad.offer.type ? (type.textContent = TYPES[ad.offer.type]) : (type.remove());
 
   ad.offer.rooms ? (capacity.textContent = `${ad.offer.rooms} комнаты для ${ad.offer.guests} гостей`) : (capacity.remove());
 
@@ -56,12 +50,6 @@ const renderCard  = (ad) => {
 
   return newPopup;
 }
-//отрисовка карточек
-
-
-//const canvas = document.querySelector('#map-canvas');
-
-//canvas.appendChild(renderCard(objects[0]));
 
 export default renderCard;
 

@@ -21,5 +21,4 @@ const postData = (data) => new Promise((res, rej) => {
     });
 });
 
-
 export default {getData, postData};
