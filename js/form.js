@@ -91,7 +91,7 @@ const syncCapacity = () => {
     inputCapacity.value = 0;
   }  else {
     for (let i = 0; i < capacities.length; i++) {
-      capacities[i].disabled = capacities[i].value > inputNumberRooms.value || capacities[i].value == '0';
+      capacities[i].disabled = capacities[i].value > inputNumberRooms.value || capacities[i].value === '0';
       if (inputCapacity.value !== capacities[i].value && !capacities[i].disabled && !selected) {
         selected = true;
         inputCapacity.value = capacities[i].value;
